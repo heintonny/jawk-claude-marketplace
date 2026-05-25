@@ -25,7 +25,9 @@ jobs:
       - name: Fast-forward upstream branch from anthropics/main
         run: |
           git remote add anthropics https://github.com/anthropics/claude-plugins-official.git
-          git fetch anthropics main --depth=1
+          # Full fetch — shallow (--depth=1) prevents finding shared ancestor
+          # and causes "refusing to merge unrelated histories" failures.
+          git fetch anthropics main
           # --ff-only fails loudly if upstream history was rewritten (shouldn't happen).
           # That failure is the correct behavior — manual investigation needed.
           git merge --ff-only anthropics/main
